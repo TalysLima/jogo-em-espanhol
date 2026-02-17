@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Desafío Avanzado</title>
+<link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eefaf2;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 560px;
+  text-align: center;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+h1 {
+  font-family: 'Agbalumo', cursive;
+  color: #27ae60;
+}
+
+.nivel {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.timer {
+  font-size: 18px;
+  color: #e74c3c;
+  margin-bottom: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  background: #2ecc71;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.fim {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>Desafío Avanzado</h1>
+
+  <p class="nivel" id="nivel"></p>
+  <p class="timer" id="timer"></p>
+  <p id="pergunta"></p>
+
+  <div id="opcoes"></div>
+
+  <p id="acertos"></p>
+
+  <div class="fim" id="fim">
+    <h2>Juego terminado</h2>
+    <p id="resumo"></p>
+    <a href="home_page.html">
+      <button>Volver a la Home</button>
+    </a>
+  </div>
+</div>
+
+<script>
+// 🔀 Função para embaralhar alternativas
+function embaralhar(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+// 📚 Perguntas
+const perguntas = {
+  facil: [
+    {q:"Azul em espanhol?",o:["Azul","Rojo","Verde","Negro"],c:"Azul"},
+    {q:"Avó em espanhol?",o:["Abuela","Madre","Tía","Suegra"],c:"Abuela"},
+    {q:"Quinta-feira em espanhol?",o:["Jueves","Viernes","Martes","Lunes"],c:"Jueves"},
+    {q:"Mão em espanhol?",o:["Mano","Brazo","Pie","Cabeza"],c:"Mano"}
+  ],
+  medio: [
+    {q:"Cotovelo em espanhol?",o:["Codo","Rodilla","Muñeca","Hombro"],c:"Codo"},
+    {q:"Genro em espanhol?",o:["Yerno","Cuñado","Nieto","Primo"],c:"Yerno"},
+    {q:"Sexta-feira em espanhol?",o:["Viernes","Sábado","Jueves","Domingo"],c:"Viernes"},
+    {q:"Pescoço em espanhol?",o:["Cuello","Espalda","Cabeza","Pecho"],c:"Cuello"}
+  ],
+  dificil: [
+    {q:"Enteado em espanhol?",o:["Hijastro","Sobrino","Nieto","Cuñado"],c:"Hijastro"},
+    {q:"Tornozelo em espanhol?",o:["Tobillo","Talón","Rodilla","Pie"],c:"Tobillo"},
+    {q:"Sobrancelha em espanhol?",o:["Ceja","Pestaña","Nariz","Ojo"],c:"Ceja"},
+    {q:"Antebraço em espanhol?",o:["Antebrazo","Brazo","Muñeca","Codo"],c:"Antebrazo"}
+  ]
+};
+
+let nivel = "facil";
+let index = 0;
+let acertos = 0;
+let tempo = 15;
+let cronometro;
+
+// ⏱ Tempo por nível
+function tempoNivel() {
+  return nivel === "facil" ? 15 : nivel === "medio" ? 12 : 10;
+}
+
+// ▶ Mostrar pergunta
+function mostrar() {
+  clearInterval(cronometro);
+  tempo = tempoNivel();
+
+  document.getElementById("nivel").textContent =
+    "Nivel: " + nivel.toUpperCase();
+  document.getElementById("acertos").textContent =
+    "Aciertos: " + acertos;
+
+  const p = perguntas[nivel][index];
+  document.getElementById("pergunta").textContent = p.q;
+
+  const op = document.getElementById("opcoes");
+  op.innerHTML = "";
+
+  // 🔀 alternativas embaralhadas
+  embaralhar([...p.o]).forEach(r => {
+    const b = document.createElement("button");
+    b.textContent = r;
+    b.onclick = () => responder(r);
+    op.appendChild(b);
+  });
+
+  document.getElementById("timer").textContent =
+    "⏱ Tiempo: " + tempo + "s";
+
+  cronometro = setInterval(() => {
+    tempo--;
+    document.getElementById("timer").textContent =
+      "⏱ Tiempo: " + tempo + "s";
+    if (tempo === 0) fim();
+  }, 1000);
+}
+
+// ✔ Responder
+function responder(resp) {
+  if (resp === perguntas[nivel][index].c) {
+    acertos++;
+    index++;
+
+    if (index >= perguntas[nivel].length) {
+      index = 0;
+      nivel = nivel === "facil" ? "medio" :
+              nivel === "medio" ? "dificil" : "fim";
+      if (nivel === "fim") { fim(); return; }
+    }
+    mostrar();
+  } else {
+    fim();
+  }
+}
+
+// ❌ Fim de jogo
+function fim() {
+  clearInterval(cronometro);
+
+  let nivelTxt = nivel === "facil" ? "Fácil" :
+                 nivel === "medio" ? "Intermediário" : "Difícil";
+  let pirulitos = nivel === "facil" ? "🍭" :
+                  nivel === "medio" ? "🍭🍭" : "🍭🍭🍭";
+
+  document.getElementById("resumo").innerHTML = `
+    Total de acertos: <b>${acertos}</b><br>
+    Nível alcançado: <b>${nivelTxt}</b><br>
+    Recompensa: <b>${pirulitos}</b>
+  `;
+
+  document.getElementById("opcoes").style.display = "none";
+  document.getElementById("nivel").style.display = "none";
+  document.getElementById("pergunta").style.display = "none";
+  document.getElementById("acertos").style.display = "none";
+  document.getElementById("timer").style.display = "none";
+  document.getElementById("fim").style.display = "block";
+}
+
+mostrar();
+</script>
+
+</body>
+</html>

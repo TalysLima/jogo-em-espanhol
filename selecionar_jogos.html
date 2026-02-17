@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Elegir Juego</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f7fdf9;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-family: 'Agbalumo', cursive;
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    .balao {
+      display: inline-block;
+      padding: 15px 25px;
+      border: 3px solid #2ecc71;
+      border-radius: 20px;
+      color: #2e7d32;
+      font-weight: bold;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .balao::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 40px;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 15px solid #2ecc71;
+    }
+
+    .jogos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .jogo {
+      background: white;
+      border: 3px solid #2ecc71;
+      border-radius: 25px;
+      padding: 30px 20px;
+      font-size: 22px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .jogo:hover {
+      background-color: #f0fff6;
+      transform: translateY(-6px);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .voltar {
+      margin-top: 40px;
+    }
+
+    .voltar button {
+      padding: 12px 26px;
+      font-size: 16px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      background-color: #2196F3;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Elige un Juego</h1>
+  <p>Selecciona un juego para empezar a aprender</p>
+
+  <div class="balao">
+    ¿Qué quieres aprender hoy? 😊
+  </div>
+
+  <div class="jogos">
+    <a href="jogo-cores.html">
+      <div class="jogo">🎨 Colores</div>
+    </a>
+
+    <a href="jogo-dias.html">
+      <div class="jogo">📅 Días</div>
+    </a>
+
+   <a href="palavras_desafio.html">
+    <div class="jogo">🧠 DESAFIO</div>
+    </a>
+    
+   
+    <a href="familia.html">
+    <div class="jogo">👨‍👩‍👧‍👦 Familia</div>
+   </a>
+    
+   <a href="cuerpo.html">
+    <div class="jogo">💪 Cuerpo</div>
+   </a>
+    
+  
+</div>
+
+  <div class="voltar">
+    <a href="home_page.html">
+      <button>⬅ Volver a la Home</button>
+    </a>
+  </div>
+
+</body>
+</html>
